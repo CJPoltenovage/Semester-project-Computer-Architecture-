@@ -321,14 +321,14 @@ def stage_if(pc, imem):
     return out
 
 
-def stage_id(instr, regs):
+def stage_id(instr, regs, stall):
     d = decode(instr)
     c = main_control(d)
     imm = select_imm(d, c)
 
     out = {}
     out["d"] = d
-    out["c"] = c.copy
+    out["c"] = c.copy()
     out["imm"] = imm
     out["rs1"] = d["rs1"]
     out["rs2"] = d["rs2"]
@@ -394,6 +394,8 @@ def stage_ex(pc, pc_plus4, id_out):
     out["taken"] = taken
     out["pc_plus4"] = u32(pc_plus4)
     out["rs2_val"] = u32(rs2_val)   # used for sw
+    out["RegWrite"] = c["RegWrite"]
+    out["rd"] = id_out["rd"]
     return out
 
 
@@ -759,6 +761,8 @@ def stage_mem_with_cache(id_out, ex_out, cache, dmem, cache_lines_log, stats):
     out["mem_data"] = 0
     out["addr"] = 0
     out["cache_event"] = ""
+    out["RegWrite"] = id_out["c"]["RegWrite"]
+    out["rd"] = id_out["rd"]
 
     control = id_out["c"]
     decode = id_out["d"]
@@ -849,6 +853,8 @@ def stage_wb(pc_plus4, id_out, ex_out, mem_out, regs):
     out["wb_val"] = u32(wb_val)
     out["wb_rd"] = rd
     out["did_write"] = did_write
+    out["rd"] = rd
+    out["RegWrite"] = 1 if (c["RegWrite"] and rd != 0) else 0
     return out
 
 
@@ -1076,7 +1082,7 @@ def main():
     pc = 0
     steps = 0
     max_steps = 10_000_000
-
+    id_out = {"rs1": 0, "rs2": 0}
 
 
 
@@ -1099,7 +1105,7 @@ def main():
         
         if hazard_bool:
             # If a hazard is detected, insert a bubble in the EX stage
-            ex_out = {"RegWrite": 0, "rd": 0}
+            ex_out = {"RegWrite": 0, "rd": 0, "next_pc": pc_plus4}
             num_stalls += 1
         else:
             ex_out = stage_ex(if_out["pc"], pc_plus4, id_out)
