@@ -1105,7 +1105,7 @@ def main():
         
         if hazard_bool:
             # If a hazard is detected, insert a bubble in the EX stage
-            ex_out = {"RegWrite": 0, "rd": 0, "next_pc": pc_plus4}
+            ex_out = {"RegWrite": 0, "rd": 0, "next_pc": pc_plus4, "alu_res": 0, "rs2_val": 0, "alu_op": "ADD", "taken": False, "pc_plus4": pc_plus4}
             num_stalls += 1
         else:
             ex_out = stage_ex(if_out["pc"], pc_plus4, id_out)
