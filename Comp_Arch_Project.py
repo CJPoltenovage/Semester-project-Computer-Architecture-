@@ -336,7 +336,7 @@ def stage_id(instr, regs, stall):
     out["rs1_val"] = u32(regs[d["rs1"]])
     out["rs2_val"] = u32(regs[d["rs2"]])
 
-    #new code for project 
+    
     #Takes the destination register (rd) from the decoded instruction fields (d)
     #and stores it in the output dictionary (out).
     out["rd"] = d["rd"]
@@ -1000,47 +1000,38 @@ def write_dmem_log(dmem, path):
 
 
 #compares the instruction in the ID stage with the instructions in 
-#ex, mem, and write bak stages to determine if the instruction in
-#id wants to read from a register that oneof those instructions is writting
+#ex, mem, and write back stages to determine if the instruction in
+#id wants to read from a register that one of those instructions is writting
 #to but has not yet written to.
 def hazard_detection(id_output, ex_output, mem_output, wb_output):
+    # id_output holds the id instruction's source registers (rs1, rs2).
+    # ex_output, mem_output, and wb_output each hold the destination registers (rd)
+    # and if it the RegWrite flag of the instruction currently in that pipeline stage.
 
-    
-    #checks for read after write errors by 
-    #seeing if the ex_output instruction will
-    #perform a register write operation and  
-    #if that operation's destination register is not rd 0 which has a constant value of 0,
-    #and if the destination register of the ex stage instruction is the same register of 
-    #either of the source registers of the id stage instruction.
+    # Checks for a read after write (RAW) hazard between the current instruction (ID) and the
+    # instruction in the EX stage. If EX is writing to a register that the
+    # current instruction needs to read, we stall by setting the value to true.
     if (
-        ex_output["RegWrite"] and ex_output["rd"] != 0 and (ex_output["rd"] == id_output["rs1"] 
+        ex_output["RegWrite"] and ex_output["rd"] != 0 and (ex_output["rd"] == id_output["rs1"]
         or ex_output["rd"] == id_output["rs2"])
     ):
         return True
     
-    # Check for RAW hazards between ID and MEM stages
-    # by checking if the MEM instruction will perform a register write operation,
-    # if the destination register of the MEM instruction is not zero,
-    # and if the destination register of the MEM instruction matches either
-    # of the source registers of the ID instruction.
+    # Checks for a hazard between the current instruction (ID) and the
+    # instruction in the MEM stage. If MEM is writing to a register that the
+    # current instruction needs to read from , westall by setting the value to true.
     if (
         mem_output["RegWrite"] and mem_output["rd"] != 0 and (mem_output["rd"] == id_output["rs1"]
         or mem_output["rd"] == id_output["rs2"])
     ):
         return True
 
-    #Check for RAW hazards between ID and WB stages
-    #by checking if the WB instruction will perform a register write operation,
-    #if the destination register of the WB instruction is not zero,
-    #and if the destination register of the WB instruction matches either
-    #of the source registers of the ID instruction.
-    if (
-        wb_output["RegWrite"] and wb_output["rd"] != 0 and (wb_output["rd"] == id_output["rs1"]
-        or wb_output["rd"] == id_output["rs2"])
-    ):
-        return True
+    #dont need a check for wb because 
+    # the information is already being given to us in this stage
+
     
-    return False 
+    # No hazard detected so return false
+    return False
     
 # ------------------------------------------------------------
 # Main (given skeleton, cache TODOs plugged in)
@@ -1099,13 +1090,30 @@ def main():
         
         
 
-        hazard_bool = hazard_detection(id_out, ex_out, mem_out, wb_out)
+        #Gets the source registers from the current instruction being fetched.
+        current_rs1 = (instr >> 15) & 0x1F
+
+        #Only R-type (0x33), S-type (0x23), and B-type (0x63) instructions use
+        #bits[24:20] as a functional register (rs2). So if they arent of that tyoe we dont want 
+        #to look at or use the rs2 value in our hazard detection
+        current_opcode = instr & 0x7F
+        if current_opcode in (0x33, 0x23, 0x63):
+            current_rs2 = (instr >> 20) & 0x1F
+        else:
+            current_rs2 = 0
+
+        # Pass the current instruction's sources so the hazard decection checks whether
+        # the instruction about to enter the EX stage conflicts with values not yet written back.
+        hazard_bool = hazard_detection({"rs1": current_rs1, "rs2": current_rs2}, ex_out, mem_out, wb_out)
 
         id_out = stage_id(instr, regs, hazard_bool)
         
         if hazard_bool:
-            # If a hazard is detected, insert a bubble in the EX stage
-            ex_out = {"RegWrite": 0, "rd": 0, "next_pc": pc_plus4, "alu_res": 0, "rs2_val": 0, "alu_op": "ADD", "taken": False, "pc_plus4": pc_plus4}
+            #If a hazard was detected we insert a bubble into the EX stage
+            #to prevent the stalled instruction from having any effect this cycle.
+            #We then set the next instruction to execute to the current instruction
+            #with an error so that after the error is reslved it will be executed again.
+            ex_out = {"RegWrite": 0, "rd": 0, "next_pc": if_out["pc"], "alu_res": 0, "rs2_val": 0, "alu_op": "ADD", "taken": False, "pc_plus4": pc_plus4}
             num_stalls += 1
         else:
             ex_out = stage_ex(if_out["pc"], pc_plus4, id_out)

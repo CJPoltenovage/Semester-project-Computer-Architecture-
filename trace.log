@@ -1,18 +1,22 @@
 step=0 | pc=0x00000000 | instr=0x10000093 | mn=addi | RegW=1 MemR=0 MemW=0 M2R=0 ALUSrc=1 Br=0 J=0 | alu=ADD res=0x00000100 | wb=x1<-0x00000100 | next_pc=0x00000004
 step=1 | pc=0x00000004 | instr=0x00500113 | mn=addi | RegW=1 MemR=0 MemW=0 M2R=0 ALUSrc=1 Br=0 J=0 | alu=ADD res=0x00000005 | wb=x2<-0x00000005 | next_pc=0x00000008
-step=2 | pc=0x00000008 | instr=0x00310193 | mn=addi | RegW=1 MemR=0 MemW=0 M2R=0 ALUSrc=1 Br=0 J=0 | alu=ADD res=0x00000008 | wb=x3<-0x00000008 | next_pc=0x0000000C
-step=3 | pc=0x0000000C | instr=0x00A00213 | mn=addi | RegW=0 MemR=0 MemW=0 M2R=0 ALUSrc=1 Br=0 J=0 | alu=ADD res=0x00000000 | next_pc=0x00000010
-step=4 | pc=0x00000010 | instr=0x01400293 | mn=addi | RegW=1 MemR=0 MemW=0 M2R=0 ALUSrc=1 Br=0 J=0 | alu=ADD res=0x00000014 | wb=x5<-0x00000014 | next_pc=0x00000014
-step=5 | pc=0x00000014 | instr=0x0020A023 | mn=sw | RegW=0 MemR=0 MemW=1 M2R=0 ALUSrc=1 Br=0 J=0 | alu=ADD res=0x00000100 | mem@0x00000100 rdata=0x00000000 | cache=SW | next_pc=0x00000018
-step=6 | pc=0x00000018 | instr=0x0030A223 | mn=sw | RegW=0 MemR=0 MemW=1 M2R=0 ALUSrc=1 Br=0 J=0 | alu=ADD res=0x00000104 | mem@0x00000104 rdata=0x00000000 | cache=SW | next_pc=0x0000001C
-step=7 | pc=0x0000001C | instr=0x0000A303 | mn=lw | RegW=1 MemR=1 MemW=0 M2R=1 ALUSrc=1 Br=0 J=0 | alu=ADD res=0x00000100 | mem@0x00000100 rdata=0x00000005 | cache=LW | wb=x6<-0x00000005 | next_pc=0x00000020
-step=8 | pc=0x00000020 | instr=0x00730393 | mn=addi | RegW=1 MemR=0 MemW=0 M2R=0 ALUSrc=1 Br=0 J=0 | alu=ADD res=0x0000000C | wb=x7<-0x0000000C | next_pc=0x00000024
-step=9 | pc=0x00000024 | instr=0x00F00413 | mn=addi | RegW=0 MemR=0 MemW=0 M2R=0 ALUSrc=1 Br=0 J=0 | alu=ADD res=0x00000000 | next_pc=0x00000028
-step=10 | pc=0x00000028 | instr=0x00100493 | mn=addi | RegW=1 MemR=0 MemW=0 M2R=0 ALUSrc=1 Br=0 J=0 | alu=ADD res=0x00000001 | wb=x9<-0x00000001 | next_pc=0x0000002C
-step=11 | pc=0x0000002C | instr=0x00840513 | mn=addi | RegW=1 MemR=0 MemW=0 M2R=0 ALUSrc=1 Br=0 J=0 | alu=ADD res=0x00000008 | wb=x10<-0x00000008 | next_pc=0x00000030
-step=12 | pc=0x00000030 | instr=0x0040A583 | mn=lw | RegW=1 MemR=1 MemW=0 M2R=1 ALUSrc=1 Br=0 J=0 | alu=ADD res=0x00000104 | mem@0x00000104 rdata=0x00000008 | cache=LW | wb=x11<-0x00000008 | next_pc=0x00000034
-step=13 | pc=0x00000034 | instr=0x00100613 | mn=addi | RegW=1 MemR=0 MemW=0 M2R=0 ALUSrc=1 Br=0 J=0 | alu=ADD res=0x00000001 | wb=x12<-0x00000001 | next_pc=0x00000038
-step=14 | pc=0x00000038 | instr=0x00458693 | mn=addi | RegW=1 MemR=0 MemW=0 M2R=0 ALUSrc=1 Br=0 J=0 | alu=ADD res=0x0000000C | wb=x13<-0x0000000C | next_pc=0x0000003C
-step=15 | pc=0x0000003C | instr=0x00300713 | mn=addi | RegW=1 MemR=0 MemW=0 M2R=0 ALUSrc=1 Br=0 J=0 | alu=ADD res=0x00000003 | wb=x14<-0x00000003 | next_pc=0x00000040
-step=16 | pc=0x00000040 | instr=0x00470793 | mn=addi | RegW=1 MemR=0 MemW=0 M2R=0 ALUSrc=1 Br=0 J=0 | alu=ADD res=0x00000007 | wb=x15<-0x00000007 | next_pc=0x00000044
-step=17 | pc=0x00000044 | instr=0x00578813 | mn=addi | RegW=1 MemR=0 MemW=0 M2R=0 ALUSrc=1 Br=0 J=0 | alu=ADD res=0x0000000C | wb=x16<-0x0000000C | next_pc=0x00000048
+step=2 | pc=0x00000008 | instr=0x00310193 | mn=addi | RegW=0 MemR=0 MemW=0 M2R=0 ALUSrc=1 Br=0 J=0 | alu=ADD res=0x00000000 | next_pc=0x00000008
+step=3 | pc=0x00000008 | instr=0x00310193 | mn=addi | RegW=1 MemR=0 MemW=0 M2R=0 ALUSrc=1 Br=0 J=0 | alu=ADD res=0x00000008 | wb=x3<-0x00000008 | next_pc=0x0000000C
+step=4 | pc=0x0000000C | instr=0x00A00213 | mn=addi | RegW=1 MemR=0 MemW=0 M2R=0 ALUSrc=1 Br=0 J=0 | alu=ADD res=0x0000000A | wb=x4<-0x0000000A | next_pc=0x00000010
+step=5 | pc=0x00000010 | instr=0x01400293 | mn=addi | RegW=1 MemR=0 MemW=0 M2R=0 ALUSrc=1 Br=0 J=0 | alu=ADD res=0x00000014 | wb=x5<-0x00000014 | next_pc=0x00000014
+step=6 | pc=0x00000014 | instr=0x0020A023 | mn=sw | RegW=0 MemR=0 MemW=1 M2R=0 ALUSrc=1 Br=0 J=0 | alu=ADD res=0x00000100 | mem@0x00000100 rdata=0x00000000 | cache=SW | next_pc=0x00000018
+step=7 | pc=0x00000018 | instr=0x0030A223 | mn=sw | RegW=0 MemR=0 MemW=1 M2R=0 ALUSrc=1 Br=0 J=0 | alu=ADD res=0x00000104 | mem@0x00000104 rdata=0x00000000 | cache=SW | next_pc=0x0000001C
+step=8 | pc=0x0000001C | instr=0x0000A303 | mn=lw | RegW=1 MemR=1 MemW=0 M2R=1 ALUSrc=1 Br=0 J=0 | alu=ADD res=0x00000100 | mem@0x00000100 rdata=0x00000005 | cache=LW | wb=x6<-0x00000005 | next_pc=0x00000020
+step=9 | pc=0x00000020 | instr=0x00730393 | mn=addi | RegW=0 MemR=0 MemW=0 M2R=0 ALUSrc=1 Br=0 J=0 | alu=ADD res=0x00000000 | next_pc=0x00000020
+step=10 | pc=0x00000020 | instr=0x00730393 | mn=addi | RegW=1 MemR=0 MemW=0 M2R=0 ALUSrc=1 Br=0 J=0 | alu=ADD res=0x0000000C | wb=x7<-0x0000000C | next_pc=0x00000024
+step=11 | pc=0x00000024 | instr=0x00F00413 | mn=addi | RegW=1 MemR=0 MemW=0 M2R=0 ALUSrc=1 Br=0 J=0 | alu=ADD res=0x0000000F | wb=x8<-0x0000000F | next_pc=0x00000028
+step=12 | pc=0x00000028 | instr=0x00100493 | mn=addi | RegW=1 MemR=0 MemW=0 M2R=0 ALUSrc=1 Br=0 J=0 | alu=ADD res=0x00000001 | wb=x9<-0x00000001 | next_pc=0x0000002C
+step=13 | pc=0x0000002C | instr=0x00840513 | mn=addi | RegW=1 MemR=0 MemW=0 M2R=0 ALUSrc=1 Br=0 J=0 | alu=ADD res=0x00000017 | wb=x10<-0x00000017 | next_pc=0x00000030
+step=14 | pc=0x00000030 | instr=0x0040A583 | mn=lw | RegW=1 MemR=1 MemW=0 M2R=1 ALUSrc=1 Br=0 J=0 | alu=ADD res=0x00000104 | mem@0x00000104 rdata=0x00000008 | cache=LW | wb=x11<-0x00000008 | next_pc=0x00000034
+step=15 | pc=0x00000034 | instr=0x00100613 | mn=addi | RegW=1 MemR=0 MemW=0 M2R=0 ALUSrc=1 Br=0 J=0 | alu=ADD res=0x00000001 | wb=x12<-0x00000001 | next_pc=0x00000038
+step=16 | pc=0x00000038 | instr=0x00458693 | mn=addi | RegW=1 MemR=0 MemW=0 M2R=0 ALUSrc=1 Br=0 J=0 | alu=ADD res=0x0000000C | wb=x13<-0x0000000C | next_pc=0x0000003C
+step=17 | pc=0x0000003C | instr=0x00300713 | mn=addi | RegW=1 MemR=0 MemW=0 M2R=0 ALUSrc=1 Br=0 J=0 | alu=ADD res=0x00000003 | wb=x14<-0x00000003 | next_pc=0x00000040
+step=18 | pc=0x00000040 | instr=0x00470793 | mn=addi | RegW=0 MemR=0 MemW=0 M2R=0 ALUSrc=1 Br=0 J=0 | alu=ADD res=0x00000000 | next_pc=0x00000040
+step=19 | pc=0x00000040 | instr=0x00470793 | mn=addi | RegW=1 MemR=0 MemW=0 M2R=0 ALUSrc=1 Br=0 J=0 | alu=ADD res=0x00000007 | wb=x15<-0x00000007 | next_pc=0x00000044
+step=20 | pc=0x00000044 | instr=0x00578813 | mn=addi | RegW=0 MemR=0 MemW=0 M2R=0 ALUSrc=1 Br=0 J=0 | alu=ADD res=0x00000000 | next_pc=0x00000044
+step=21 | pc=0x00000044 | instr=0x00578813 | mn=addi | RegW=1 MemR=0 MemW=0 M2R=0 ALUSrc=1 Br=0 J=0 | alu=ADD res=0x0000000C | wb=x16<-0x0000000C | next_pc=0x00000048
