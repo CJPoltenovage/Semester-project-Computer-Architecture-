@@ -1,0 +1,11 @@
+Cache config: size=256B  block=16B  assoc=2  sets=8
+---------------------------------------------
+Total accesses : 0
+  Loads        : 0
+  Stores       : 0
+---------------------------------------------
+Hits           : 0
+Misses         : 0
+Hit rate       : 0.00
+---------------------------------------------
+Writebacks     : 0
