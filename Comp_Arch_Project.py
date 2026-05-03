@@ -1111,7 +1111,8 @@ def main():
             #We then set the next instruction to execute to the current instruction
             #with an error so that after the error is reslved it will be executed again.
             ex_out = {"RegWrite": 0, "rd": 0, "next_pc": 
-            if_out["pc"], "alu_res": 0, "rs2_val": 0, "alu_op": "ADD", "taken": False, "pc_plus4": pc_plus4}
+            if_out["pc"], "alu_res": 0, "rs2_val": 0, "alu_op":
+            "ADD", "taken": False, "pc_plus4": pc_plus4}
             num_stalls += 1
         else:
             ex_out = stage_ex(if_out["pc"], pc_plus4, id_out)
@@ -1127,7 +1128,7 @@ def main():
         regs[0] = 0
         steps += 1
 
-    # TODO (A6): flush dirty cache lines back to memory at end
+    # TODO (A6): flush dirty cache lines back to memory at end  
     cache_flush_all(dmem, cache, cache_lines_log, stats)
 
 
@@ -1146,7 +1147,7 @@ def main():
     print("wrote trace.log, regs_final.log, dmem_final.log, cache.log, cache_stats.log")
 
     print(f"Number of stalls: {num_stalls}")
-    print(f"CPI: {(steps + num_stalls) / steps:.2f}")
+    print(f"CPI: {steps / (steps - num_stalls):.2f}")
 
 
 if __name__ == "__main__":
