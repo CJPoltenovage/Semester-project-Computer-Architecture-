@@ -1029,7 +1029,7 @@ def hazard_detection(id_output, ex_output, mem_output, wb_output):
     #dont need a check for wb because 
     # the information is already being given to us in this stage
 
-    
+
     # No hazard detected so return false
     return False
     
@@ -1083,12 +1083,9 @@ def main():
             break
 
         
-
         pc_plus4 = if_out["pc_plus4"]
         instr = if_out["instr"]
 
-        
-        
 
         #Gets the source registers from the current instruction being fetched.
         current_rs1 = (instr >> 15) & 0x1F
@@ -1113,7 +1110,8 @@ def main():
             #to prevent the stalled instruction from having any effect this cycle.
             #We then set the next instruction to execute to the current instruction
             #with an error so that after the error is reslved it will be executed again.
-            ex_out = {"RegWrite": 0, "rd": 0, "next_pc": if_out["pc"], "alu_res": 0, "rs2_val": 0, "alu_op": "ADD", "taken": False, "pc_plus4": pc_plus4}
+            ex_out = {"RegWrite": 0, "rd": 0, "next_pc": 
+            if_out["pc"], "alu_res": 0, "rs2_val": 0, "alu_op": "ADD", "taken": False, "pc_plus4": pc_plus4}
             num_stalls += 1
         else:
             ex_out = stage_ex(if_out["pc"], pc_plus4, id_out)
