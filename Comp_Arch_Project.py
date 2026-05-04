@@ -1026,9 +1026,16 @@ def hazard_detection(id_output, ex_output, mem_output, wb_output):
     ):
         return True
 
-    #dont need a check for wb because 
-    # the information is already being given to us in this stage
 
+
+    # Checks for a hazard between the current instruction (ID) and the
+    # instruction in the WB stage. If WB is writing to a register that the
+    # current instruction needs to read, we stall.
+    if (
+        wb_output["RegWrite"] and wb_output["rd"] != 0 and (wb_output["rd"] == id_output["rs1"]
+        or wb_output["rd"] == id_output["rs2"])
+    ):
+        return True
 
     # No hazard detected so return false
     return False
