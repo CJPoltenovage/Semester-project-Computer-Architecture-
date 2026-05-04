@@ -1,6 +1,6 @@
 
 
-The purpose of a simulator built to detect and handle data hazards in a 5-stage RV32I pipeline.
+The purpose of this project is to develop a simulator built to detect and handle data hazards in a 5-stage RV32I pipeline.
 
 
 
