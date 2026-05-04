@@ -8,9 +8,8 @@ This project simulates how a processor pipeline detects Read After Write (RAW) h
 
 ## How to Run
 
-```
 python Comp_Arch_Project.py
-```
+
 
 Put your instructions in `hex_inst.txt` (one 32-bit hex instruction per line) and run the command above.
 
