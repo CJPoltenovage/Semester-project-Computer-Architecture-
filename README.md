@@ -1,6 +1,6 @@
 
 
-A simulator built to detect and handle data hazards in a 5-stage RV32I pipeline.
+The purpose of a simulator built to detect and handle data hazards in a 5-stage RV32I pipeline.
 
 
 
