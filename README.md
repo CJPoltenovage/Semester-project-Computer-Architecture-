@@ -1,5 +1,4 @@
 
-
 The purpose of this project is to develop a simulator built to detect and handle data hazards in a 5-stage RV32I pipeline.
 
 
@@ -10,7 +9,7 @@ The command to run this program is
 python Comp_Arch_Project.py
 
 
-Paste your instructions into hex_inst.txt from the instructions document and run the command above.
+Paste your instructions into hex_inst.txt from the "Test Sets of hex values" document and run the command above.
 
 
 

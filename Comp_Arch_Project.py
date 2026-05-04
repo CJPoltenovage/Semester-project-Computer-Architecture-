@@ -1076,12 +1076,12 @@ def main():
     }
 
 
-   
+   #iitalizes variables
     pc = 0
     steps = 0
     max_steps = 10_000_000
     id_out = {"rs1": 0, "rs2": 0}
-
+    
 
 
     while steps < max_steps:
