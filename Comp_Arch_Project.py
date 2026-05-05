@@ -1015,7 +1015,7 @@ def hazard_detection(id_output, ex_output, mem_output, wb_output):
         ex_output["RegWrite"] and ex_output["rd"] != 0 and (ex_output["rd"] == id_output["rs1"]
         or ex_output["rd"] == id_output["rs2"])
     ):
-        return True
+        return True, "RAW-EX"
     
     # Checks for a hazard between the current instruction (ID) and the
     # instruction in the MEM stage. If MEM is writing to a register that the
@@ -1024,9 +1024,7 @@ def hazard_detection(id_output, ex_output, mem_output, wb_output):
         mem_output["RegWrite"] and mem_output["rd"] != 0 and (mem_output["rd"] == id_output["rs1"]
         or mem_output["rd"] == id_output["rs2"])
     ):
-        return True
-
-
+        return True, "RAW-MEM"
 
     # Checks for a hazard between the current instruction (ID) and the
     # instruction in the WB stage. If WB is writing to a register that the
@@ -1035,11 +1033,13 @@ def hazard_detection(id_output, ex_output, mem_output, wb_output):
         wb_output["RegWrite"] and wb_output["rd"] != 0 and (wb_output["rd"] == id_output["rs1"]
         or wb_output["rd"] == id_output["rs2"])
     ):
-        return True
+        return True, "RAW-WB"
 
     # No hazard detected so return false
-    return False
+    return False, None
     
+
+
 # ------------------------------------------------------------
 # Main (given skeleton, cache TODOs plugged in)
 # ------------------------------------------------------------
@@ -1048,10 +1048,24 @@ def main():
     #initalizes the num stalls variable to track how many stall cycles happened
     num_stalls = 0
 
-    #initalizes placeholder values for the three stages 
+    #initalizes the stall log 
+    stall_log = []
+
+    stall_stats = {
+        "RAW-EX": 0,
+        "RAW-MEM": 0,
+        "RAW-WB": 0
+    }
+
+    #initalizes placeholder values for the three stages
     ex_out = {"RegWrite": 0, "rd": 0}
     mem_out = {"RegWrite": 0, "rd": 0}
     wb_out = {"RegWrite": 0, "rd": 0}
+
+    # Pipeline registers for each stage in the pipelie.
+    pipe_ex  = {"RegWrite": 0, "rd": 0}   # instruction currently in EX
+    pipe_mem = {"RegWrite": 0, "rd": 0}   # instruction currently in MEM
+    pipe_wb  = {"RegWrite": 0, "rd": 0}   # instruction currently in WB
 
     imem = load_imem_from_file("hex_inst.txt")
 
@@ -1082,6 +1096,7 @@ def main():
     max_steps = 10_000_000
     id_out = {"rs1": 0, "rs2": 0}
     
+  
 
 
     while steps < max_steps:
@@ -1108,11 +1123,24 @@ def main():
 
         # Pass the current instruction's sources so the hazard decection checks whether
         # the instruction about to enter the EX stage conflicts with values not yet written back.
-        hazard_bool = hazard_detection({"rs1": current_rs1, "rs2": current_rs2}, ex_out, mem_out, wb_out)
-
+        hazard_bool, hazard_type = hazard_detection(
+            {"rs1": current_rs1, "rs2": current_rs2},
+            pipe_ex, pipe_mem, pipe_wb
+            )
+        
         id_out = stage_id(instr, regs, hazard_bool)
         
         if hazard_bool:
+
+
+            mnem = try_mnemonic(decode(instr))
+
+            stall_log.append(
+                "STALL | pc=0x%08X instr=0x%08X type=%s reason=%s rs1=x%d rs2=x%d" %
+                (if_out["pc"], instr, mnem, hazard_type, current_rs1, current_rs2)
+            )
+
+            stall_stats[hazard_type] += 1
             #If a hazard was detected we insert a bubble into the EX stage
             #to prevent the stalled instruction from having any effect this cycle.
             #We then set the next instruction to execute to the current instruction
@@ -1121,6 +1149,7 @@ def main():
             if_out["pc"], "alu_res": 0, "rs2_val": 0, "alu_op":
             "ADD", "taken": False, "pc_plus4": pc_plus4}
             num_stalls += 1
+
         else:
             ex_out = stage_ex(if_out["pc"], pc_plus4, id_out)
 
@@ -1133,11 +1162,27 @@ def main():
 
         pc = u32(ex_out["next_pc"])
         regs[0] = 0
+
+
+        
+        #Simulates moving the pipeline registers forward
+        #the wb stage recieves the mem stage instruction
+        #the mem stage recivees the ex stage instruction
+        pipe_wb  = {"RegWrite": pipe_mem["RegWrite"], "rd": pipe_mem["rd"]}
+        pipe_mem = {"RegWrite": pipe_ex["RegWrite"],  "rd": pipe_ex["rd"]}
+        #inject bubble into the ex stage pipeline if hazard is detected
+        if hazard_bool:
+            pipe_ex = {"RegWrite": 0, "rd": 0}
+        else:
+            #the ex stage recieves the id_out intruction
+            pipe_ex = {"RegWrite": id_out["RegWrite"], "rd": id_out["rd"]}
+
         steps += 1
 
     # TODO (A6): flush dirty cache lines back to memory at end  
     cache_flush_all(dmem, cache, cache_lines_log, stats)
 
+    write_lines("stalls.log", stall_log)
 
     # write logs
     write_lines("trace.log", trace_lines)
@@ -1154,7 +1199,18 @@ def main():
     print("wrote trace.log, regs_final.log, dmem_final.log, cache.log, cache_stats.log")
 
     print(f"Number of stalls: {num_stalls}")
-    print(f"CPI: {steps / (steps - num_stalls):.2f}")
+    total_instructions = steps - num_stalls
+    cpi = steps / total_instructions if total_instructions > 0 else 0
+
+    print("\n----------PERFORMANCE REPORT---------")
+    print(f"Total cycles      : {steps}")
+    print(f"Instructions      : {total_instructions}")
+    print(f"Total stalls      : {num_stalls}")
+    print(f"CPI               : {cpi:.3f}")
+
+    print("\nStall Breakdown:")
+    for k, v in stall_stats.items():
+        print(f"  {k:<10}: {v}")
 
 
 if __name__ == "__main__":

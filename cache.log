@@ -1,1 +1,6 @@
+SW MISS | addr=0x00000100 set=0 way=0 tag=0x2 woff=0 val=0x00000005
+SW HIT  | addr=0x00000104 set=0 way=0 tag=0x2 woff=1 val=0x00000008
+LW HIT  | addr=0x00000100 set=0 way=0 tag=0x2 woff=0 val=0x00000005
+LW HIT  | addr=0x00000104 set=0 way=0 tag=0x2 woff=1 val=0x00000008
+WB | set=0 way=0 tag=0x2 base=0x00000100
 CACHE FLUSH DONE

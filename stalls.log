@@ -1,0 +1,16 @@
+STALL | pc=0x00000008 instr=0x00310193 type=addi reason=RAW-EX rs1=x2 rs2=x0
+STALL | pc=0x00000008 instr=0x00310193 type=addi reason=RAW-MEM rs1=x2 rs2=x0
+STALL | pc=0x00000008 instr=0x00310193 type=addi reason=RAW-WB rs1=x2 rs2=x0
+STALL | pc=0x00000020 instr=0x00730393 type=addi reason=RAW-EX rs1=x6 rs2=x0
+STALL | pc=0x00000020 instr=0x00730393 type=addi reason=RAW-MEM rs1=x6 rs2=x0
+STALL | pc=0x00000020 instr=0x00730393 type=addi reason=RAW-WB rs1=x6 rs2=x0
+STALL | pc=0x0000002C instr=0x00840513 type=addi reason=RAW-MEM rs1=x8 rs2=x0
+STALL | pc=0x0000002C instr=0x00840513 type=addi reason=RAW-WB rs1=x8 rs2=x0
+STALL | pc=0x00000038 instr=0x00458693 type=addi reason=RAW-MEM rs1=x11 rs2=x0
+STALL | pc=0x00000038 instr=0x00458693 type=addi reason=RAW-WB rs1=x11 rs2=x0
+STALL | pc=0x00000040 instr=0x00470793 type=addi reason=RAW-EX rs1=x14 rs2=x0
+STALL | pc=0x00000040 instr=0x00470793 type=addi reason=RAW-MEM rs1=x14 rs2=x0
+STALL | pc=0x00000040 instr=0x00470793 type=addi reason=RAW-WB rs1=x14 rs2=x0
+STALL | pc=0x00000044 instr=0x00578813 type=addi reason=RAW-EX rs1=x15 rs2=x0
+STALL | pc=0x00000044 instr=0x00578813 type=addi reason=RAW-MEM rs1=x15 rs2=x0
+STALL | pc=0x00000044 instr=0x00578813 type=addi reason=RAW-WB rs1=x15 rs2=x0
